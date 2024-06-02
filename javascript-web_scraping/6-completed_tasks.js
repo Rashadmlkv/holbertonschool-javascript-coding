@@ -2,20 +2,26 @@
 
 const request = require('request');
 
-request(process.argv[2], (err, res, body) => {
-  if (err) console.log(err);
-  else {
-    const tasks = JSON.parse(body);
-    const newdict = {};
-    for (const task of tasks) {
-      if (task.completed === true) {
-        if (newdict[task.userId] === undefined) {
-          newdict[task.userId] = 1;
-        } else {
-          newdict[task.userId] += 1;
-        }
-      }
-    }
-    console.log(newdict);
+const URL = process.argv[2];
+
+request(URL, { json: true }, (err, res, todos) => {
+  if (err) {
+    console.log(err);
+    return;
   }
+
+  const outputObject = {};
+
+  const completedTasks = todos.filter(task => task.completed);
+
+  completedTasks.forEach(task => {
+    outputObject[task.userId] = outputObject[task.userId] ? outputObject[task.userId] + 1 : 1;
+    // if (outputObject[task.userId]) {
+    //   outputObject[task.userId]++;
+    // } else {
+    //   outputObject[task.userId] = 1;
+    // }
+  });
+
+  console.log(outputObject);
 });
