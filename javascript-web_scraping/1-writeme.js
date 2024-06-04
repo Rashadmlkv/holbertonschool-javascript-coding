@@ -1,10 +1,9 @@
 #!/usr/bin/node
-import fs from 'fs';
-import process from 'process';
 
-const filename = process.argv[2];
-const text = process.argv[3];
+const fs = require('fs');
 
-fs.writeFile(filename, text, 'utf-8', (error) => {
-  if (error) { console.log(error); }
+fs.writeFile(process.argv[2], process.argv[3], 'utf-8', (err) => {
+  if (err) {
+    console.log(err);
+  }
 });

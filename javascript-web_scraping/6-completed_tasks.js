@@ -1,27 +1,25 @@
 #!/usr/bin/node
 
 const request = require('request');
+const urlApi = process.argv[2];
 
-const URL = process.argv[2];
+request(urlApi, function (error, response, body) {
+  if (error) {
+    console.log(error);
+  } else {
+    const jsonObj = JSON.parse(body);
+    const newDict = {};
+    let key = '';
 
-request(URL, { json: true }, (err, res, todos) => {
-  if (err) {
-    console.log(err);
-    return;
+    for (let i = 0; i < jsonObj.length; i++) {
+      key = jsonObj[i].userId.toString();
+      if (!newDict[key] && jsonObj[i].completed) {
+        newDict[key] = 1;
+      } else if (jsonObj[i].completed) {
+        newDict[key]++;
+      }
+    }
+
+    console.log(newDict);
   }
-
-  const outputObject = {};
-
-  const completedTasks = todos.filter(task => task.completed);
-
-  completedTasks.forEach(task => {
-    outputObject[task.userId] = outputObject[task.userId] ? outputObject[task.userId] + 1 : 1;
-    // if (outputObject[task.userId]) {
-    //   outputObject[task.userId]++;
-    // } else {
-    //   outputObject[task.userId] = 1;
-    // }
-  });
-
-  console.log(outputObject);
 });

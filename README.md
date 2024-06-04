@@ -1,1 +1,1 @@
-# holbertonschool-javascript-coding
+# Documentation for Javascript Coding repo.

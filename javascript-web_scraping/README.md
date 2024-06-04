@@ -1,1 +1,1 @@
-# JavaScript - Web scraping
+# Documentation for Web Scraping directory.
